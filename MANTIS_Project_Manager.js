@@ -18,10 +18,8 @@ function changeItem (index) {
 }
 
 function genGlobalKeys () {
-//	dict.set("type", "Global")
 	dict.set("globalSettings")
 	dict.append("globalSettings")
-	//dict.append("globalSettings", "*")
 	dict.setparse("globalSettings[0]","pattrFilePath:" ,"inputMatrix064FilePath:", "inputMatrix65128FilePath:", "outputMatrixFilePath:", "faderCalibHigh:", "faderCalibLow:", "faderCurve:", "channelNames:", "vidDelay:", "decoderSettings:")
 	dict.set("globalSettings[0]::faderCalibHigh", [0])
 	dict.set("globalSettings[0]::faderCalibLow", [0])
@@ -32,19 +30,12 @@ genGlobalKeys()
 /* Function to organize file pathing items into array structure */
 function fileTemplate (filename, path, index) {
 	var fileArr = []
-	//var f = filename
-	//var nameVal =  "." + f.split('.').pop() + ""
-//	if (nameVal == ".mp3"|| nameVal == ".wav" || nameVal == ".aiff"|| nameVal == ".flac") {
-	//	post ("\n" + "if test is TRUE: " + nameVal)
 		fileArr[0] = filename
 		fileArr[1] = "" + path + "" + filename + ""
 		fileArr[2] = index
 		fileArr[3] = filename.split('.').pop();
-	//	} else {
-	//	post ("\n" + filename + " is not an audio file. File skipped as format is not .mp3, .wav, .aiff, or .flac" )
-//	post ("\n" + fileArr[0], fileArr[1], fileArr[2], fileArr[3] + "")
+
 	return fileArr
-//	}
 	
 
 }
@@ -58,30 +49,22 @@ Calls function to build dictionary structure from temp holding array information
 function folderPathLoad (path) {
 	f = new Folder(path)
 	post(f.count);
-//	f.typelist = ["wav", "mp3", "flac", "aiff"]
 	var testArr = []
 	loadArray = []
 	var indexCount = 0
-	//for (var i = 0; i < f.length; i++) {
 		while (!f.end) {
-		//	indexCount += 1
 			var filenameCopy = f.filename
 			var nameVal =  "." + filenameCopy.split('.').pop() + ""
-			//post ("\n" + filenameCopy + "is the new name")
 			if (nameVal == ".mp3"|| nameVal == ".wav" || nameVal == ".aiff"|| nameVal == ".aif"|| nameVal == ".flac" || nameVal == ".rf64" || nameVal == ".w64") { 
 				indexCount += 1
-		//		post ("\n" + "if test is TRUE: " + f.filename + " is a " + nameVal)
 				loadArray.push(fileTemplate(f.filename, path, indexCount))
 			} else {
 			post ("\n" + f.filename + " is not an audio file. Please try a file that is .mp3, .wav, .aif, .flac, .rf64 or .w64" )
-		//	post("\n" + f.filename);
-		//		f.next();
 			}
 			f.next();
 		}
 
 		f.close();
-	//mantis.remove("tracks::")
 	buildDict(loadArray)
 	generateMenu()
 	maxDim = dict.getsize("tracks")
@@ -102,19 +85,9 @@ Logic for construction of Dict data structure, conversion from arr to Dict.
 */
 
 function buildDict (array) {
-	/* Delete this first function after debug */
 
-/*	function testArrPrint () {
-	for (var i = 0; i < loadArray.length; i++) {
-			post ("\n" + loadArray[i][0])
-		}
-	}
-*/
-	
 	dict.set("type", "Tracklist")
 	dict.set("tracks")
-//	dict.append("tracks")
-	//dict.setparse("tracks[0]", "filename:", "filepath:", "index:")
 	for (var i = 0; i < array.length; i++) {
 		if (i == 0) {
 			dict.append("tracks")
@@ -124,7 +97,6 @@ function buildDict (array) {
 		dict.setparse("tracks[" + i + "]", "filename:", "filepath:", "index:", "filetype:", "videoPath:", "presetIndex:", "ambisonicFlag:", "cuePositions:")
 	}
 	for (var i = 0; i < array.length; i++) {
-	//	for (var j = 0; j < array[i].length; i++){
 		dict.set("tracks[" + i + "]::filename", "" + array[i][0] + "")
 		dict.set("tracks[" + i + "]::filepath", "" + array[i][1] + "")
 		dict.set("tracks[" + i + "]::index", "" + array[i][2] + "")
@@ -134,14 +106,11 @@ function buildDict (array) {
 		dict.set("tracks[" + i + "]::ambisonicFlag", "0")
 		dict.set("tracks[" + i + "]::cuePositions", [0])
 		dict.set("tracks[" + i + "]::faderRecallPositions", [0])
-	//	}
 	}
-	//	dict.remove("tracks[0]")
 }
 
 function testBuild () {
 	buildDict(loadArray)
-	//dict.export_json();
 }
 
 function indexPost (x, y) {
@@ -191,18 +160,11 @@ function addTrack (file, path) {
 function cueListMenu() {
 		outlet (4, "clear")
 	var length = dict.getsize("tracks[" + currentItem + "]" + "::cuePositions")
-	//	var a = dict.get("tracks[" + i + "]" + "::filename")
-//	for (var i = 0; i < length; i++) {
 		var cueArr = dict.get("tracks[" + currentItem + "]" + "::cuePositions")
 		post (cueArr)
 		for (var i = 0; i < length; i++) {
 			outlet(4, i ,cueArr[i])
 		}
-	//	var n = dict.get("tracks[" + i + "]" + "::filename")
-	//	var x = dict.get("tracks[" + i + "]" + "::index")
-		//outlet(1, "append", n)
-		//outlet(3, i, n)
-	//}
 }
 
 /* Function to generate track menu items from initialization, and refresh calls upon alterations of contents */
@@ -258,20 +220,6 @@ function updatePath (path) {
 	outTrackInfo(currentItem)
 }
 
-/* function addCue (cue) {
-	var cueArr = dict.get("tracks[" + currentItem +"]" + "::cuePositions")
-	post ("\n" + "recalled cuelist is " + cueArr + "")
-	var cueSize = cueArr.length
-	if (cueSize == 0 || cueArr == 0) {
-		dict.set("tracks[" + currentItem +"]" + "::cuePositions", [""])
-		dict.set("tracks[" + currentItem +"]" + "::cuePositions[" + 0 + "]", cue)
-		
-	} else {
-		cueArr.push(cue)
-		post (cueArr)
-		dict.set("tracks[" + currentItem +"]" + "::cuePositions[" + (cueSize - 1) + "]", cueArr)
-	}
-} */
 
 function addCue (cue) {
 	var cueArr = dict.get("tracks[" + currentItem +"]" + "::cuePositions")
@@ -280,7 +228,6 @@ function addCue (cue) {
 	testArr = [1, 2, 44, 55, 66, 77]
 	cueArr.push(cue)
 	post ("\n" + "current Arr is " + cueArr)
-	//	dict.set("tracks[" + currentItem +"]" + "::cuePositions[" + (cueSize - 1) + "]", cueArr)
 	dict.set("tracks[" + currentItem +"]" + "::cuePositions", cueArr)
 	cueListMenu()
 }
@@ -293,8 +240,6 @@ function clearCues () {
 function addFadersRecallPositions (faderVals) {
 	var a = faderVals
 	var length = a.length
-//	post("\n" + "Arg length is: " length + "")
-//	post(length)
 	var tempArr = []
 	tempArr = faderVals
 	dict.set("tracks[" + currentItem + "]::faderRecallPositions", tempArr)
@@ -305,32 +250,11 @@ function faderRecall () {
 	outlet (5, positions)
 }
 
-/*
-function anything()
-{
-	var a = arrayfromargs(messagename, arguments);
-	post("received message " + a + "\n");
-	myval = a;
-	bang();
-}
-*/
 function list()
 {
 	var a = arrayfromargs(arguments);
-//	post("received message " + a + "\n");
-	//myval = a;
 	addFadersRecallPositions(a)
 }
-
-/* 
-function matrixIn (x, y, val) {
-
-}
-
-function faderCalib (arr) {
-
-}
-*/
 
 function saveVidDelay (val) {
 		dict.set("globalSettings[0]::vidDelay", val)
@@ -383,10 +307,8 @@ function saveFaderCurve(val) {
 function anything()
 {
 	var a = arrayfromargs(messagename, arguments);
-	//post (a[1])
 	
 	if (a[1] === "matrixIn") {
-	//	post("received message " + "matrixIn " + a[1] + "\n");
 		matrixIn(a[2], a[3], a[4])
 	} else if (a[1] === "saveCalibHigh") {
 		a.shift()
@@ -434,25 +356,10 @@ function recallLoadGlobal () {
 	
 	/* not yet implemented, uncomment when ready */
 	outlet (6, "channelNameRecall", cn)
-	//outlet (6, "decoderSettingsRecall", dc)
 	outlet (6, "vidDelayRecall", vd)
 	
 }
-/*
-function filePathLoad(path){
-	filename = path;
-	access = "read";
-	f = new File(filename, access, typelist);
 
-	f.close();
-	f.open("FileTest2.txt");
-	while(f.isopen && f.position < f.eof ){
-		post(f.readline() + "\n");
-	}
-
-	f.close();
-}
-*/
 
 /* Save/Load functions, will replace internal Dict contents upon load */
 
