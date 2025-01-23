@@ -67,7 +67,6 @@ function returnClasses () {
 	for (var i = 0; i < fullArr.length; i++) {
   		if (fullArr[i].on == 1 && fullArr[i].lengthConflict != 1) {
     	outArr.push(fullArr[i].sequence())
-	//	fullArr[i].pitchSequence()
     	}
   	}
 	return outArr
@@ -76,11 +75,8 @@ function returnClasses () {
 function returnPitches () {
 	var outArr = []
 	for (var i = 0; i < fullArr.length; i++) {
-  		//if (fullArr[i].on == 1 && fullArr[i].lengthConflict != 1) 
 {
     	outArr.push(fullArr[i].pitch)
-	//	outArr.push(fullArr[i].pitchSequence())
-	//	fullArr[i].pitchSequence()
     	}
   	}
 	return outArr
@@ -228,7 +224,6 @@ function cycle (arr, pow) {
 
 function baseNote(index, note) { 
 	fullArr[index].pitch = note
-//	post("\n" + fullArr[index].pitch)
 }
 
 
@@ -240,7 +235,6 @@ function targInterval(index, interval) {
 function matrixTableSize () {
 	var maximum = 0
 	for (var i = 0; i < fullArr.length; i++) {
-	//	post("\n" + i + " rolls length is: " + fullArr[i].rolls.length)
 		if (maximum < fullArr[i].rolls.length) {
 			maximum = fullArr[i].rolls.length
 			}
