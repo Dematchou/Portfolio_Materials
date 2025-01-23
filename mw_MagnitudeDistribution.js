@@ -11,6 +11,7 @@ var fullArr = [
 var testArr = [1, 0, 0, 1, 1, 0, 1, 1, 1, 1]
 var maxSteps = 8;
 
+// ES5 style constructor for "step" object
 function step (ind, on) {
     this.index = ind,
     this.on = on,
@@ -41,6 +42,7 @@ function step (ind, on) {
 	}
   }
 
+// Initialization routines
 function numSteps (num) {
 	maxSteps = num;
 	createClasses(maxSteps);
@@ -62,6 +64,7 @@ function beatDuration (num, duration) {
 	fullArr[num].duration = duration
 }
 
+//Step conflict check callback + callbacks for object
 function returnClasses () {
 	var outArr = []
 	for (var i = 0; i < fullArr.length; i++) {
@@ -111,6 +114,7 @@ function list() {
 			}
 }
 
+//function to check for conflicting step positions
 function lengthCheck () {
 	for (var i = 0; i < fullArr.length; i++) {
 		fullArr[i].lengthConflict = 0	
@@ -130,6 +134,7 @@ function lengthCheck () {
 	}
 }
 
+//UI display in jitter format
 function jitterDraw () {
 	outlet(2, "clear")
 	for (var i = 0; i < fullArr.length; i++) {
@@ -143,6 +148,8 @@ function jitterDraw () {
 	outlet(2, "bang")
 }
 
+
+//final step position array sent to "what~" object
 function finalOut () {
 		lengthCheck()
 		returnConflicts()
